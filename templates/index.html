@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Personal Finance Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+
+            <div class="logo">
+                <span class="logo-icon">F</span>
+                <h2>FinTrack</h2>
+            </div>
+
+            <nav class="navigation">
+
+                <p class="nav-label">MENU</p>
+
+                <a href="#" class="nav-link active">
+                    <span>▦</span> Overview
+                </a>
+
+                <a href="#" class="nav-link">
+                    <span>↔</span> Transactions
+                </a>
+
+                <a href="#" class="nav-link">
+                    <span>▤</span> Budgets
+                </a>
+
+                <a href="#" class="nav-link">
+                    <span>◉</span> Analytics
+                </a>
+
+              <a href="#" class="nav-link">
+    <span>⚙</span> Savings Goals
+</a>
+
+<a href="#" class="nav-link">
+    <span>⚙</span> Settings
+</a>
+</nav>
+</aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Header -->
+            <header class="topbar">
+
+                <div>
+                    <h1>Overview</h1>
+                    <p>Welcome back! Here's your financial summary.</p>
+                </div>
+
+                <button id="theme-toggle" class="theme-toggle">
+                    ☀ Light Mode
+                </button>
+
+            </header>
+
+
+            <!-- Financial Cards -->
+            <section id="overview" class="summary-grid">
+
+                <div class="summary-card">
+                    <p>Total Balance</p>
+                    <h2>${{ "%.2f"|format(total_balance) }}</h2>
+                    <span class="positive">Your current balance</span>
+                </div>
+
+                <div class="summary-card">
+                    <p>Monthly Income</p>
+                    <h2>${{ "%.2f"|format(monthly_income) }}</h2>
+                    <span class="positive">Money received</span>
+                </div>
+
+                <div class="summary-card">
+                    <p>Monthly Expenses</p>
+                    <h2>${{ "%.2f"|format(monthly_expenses) }}</h2>
+                    <span class="negative">Money spent</span>
+                </div>
+
+                <div class="summary-card">
+                    <p>Monthly Savings</p>
+                    <h2>${{ "%.2f"|format(monthly_savings) }}</h2>
+                    <span class="positive">Money saved</span>
+                </div>
+
+            </section>
+
+
+            <!-- Analytics Section -->
+            <section id="analytics" class="analytics-grid">
+                
+<div class="panel spending-panel">
+
+    <div class="panel-header">
+        <div>
+            <h2>Income vs Expenses</h2>
+            <p>Your financial activity</p>
+        </div>
+
+        <span class="period-label">Last 6 months</span>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="incomeExpenseChart"></canvas>
+    </div>
+
+</div>
+
+
+                    </div>
+
+                </div>
+
+
+                <div id="budgets" class="panel budget-panel">
+
+                    <h2>Monthly Budget</h2>
+                    <p>Your spending progress</p>
+
+   
+<form id="budget-form" class="budget-form">
+    <label for="budget-input">Monthly spending limit</label>
+    <input
+        type="number"
+        id="budget-input"
+        min="1"
+        step="0.01"
+        placeholder="Enter monthly budget"
+        required
+    >
+    <button type="submit">Save Budget</button>
+    <p id="budget-message"></p>
+</form>
+
+
+
+    <div class="budget-amount">
+        <h2>${{ "%.2f"|format(monthly_expenses) }}</h2>
+        <span>of $<span id="budget-limit">2,000.00</span></span>
+    </div>
+
+    <div class="progress-track">
+        <div class="progress-fill" id="budget-progress" style="width: 0%;">
+        </div>
+    </div>
+
+   
+    <p class="budget-note" id="budget-note">
+    Loading budget...
+</p>
+
+</div>
+
+            </section>
+
+
+
+
+
+<!-- Add Transaction -->
+<section class="panel add-transaction-panel">
+    <div class="panel-header">
+        <div>
+            <h2>Add Transaction</h2>
+            <p>Record your income and expenses</p>
+        </div>
+    </div>
+
+    <form id="transactionForm">
+        <input type="text" id="description"
+               placeholder="Transaction description" required>
+
+        <input type="number" id="amount"
+               placeholder="Amount" min="0.01"
+               step="0.01" required>
+
+        <select id="transactionType" required>
+            <option value="">Select Type</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+        </select>
+
+        <select id="category" required>
+            <option value="">Select Category</option>
+            <option value="Food">Food</option>
+            <option value="Transportation">Transportation</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Bills">Bills</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <input type="date" id="transactionDate" required>
+
+        <button type="submit">Save Transaction</button>
+    </form>
+</section>
+
+
+
+
+
+            <!-- Recent Transactions -->
+            <section id="transactions" class="panel transactions-panel">
+
+                <div class="panel-header">
+                    <div>
+                        <h2>Recent Transactions</h2>
+                        <p>Your latest financial activity</p>
+                    </div>
+
+                    <button class="view-all">View All</button>
+                </div>
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>Transaction</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+{% for transaction in transactions %}
+<tr>
+    <td>{{ transaction.description }}</td>
+    <td>{{ transaction.category }}</td>
+    <td>{{ transaction.transaction_date }}</td>
+
+    <td class="{{ 'positive' if transaction.transaction_type == 'income' else 'negative' }}">
+        {{ '+' if transaction.transaction_type == 'income' else '-' }}${{ "%.2f"|format(transaction.amount) }}
+    </td>
+
+    <td class="transaction-actions">
+        <button class="edit-btn"
+                data-id="{{ transaction.id }}">
+            Edit
+        </button>
+
+        <button class="delete-btn"
+                data-id="{{ transaction.id }}">
+            Delete
+        </button>
+    </td>
+</tr>
+{% else %}
+<tr>
+    <td colspan="5">No transactions yet.</td>
+</tr>
+{% endfor %}
+
+
+
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+
+
+<!-- Savings Goals Section -->
+<section id="savings-goals" class="panel">
+    <div class="section-header">
+        <div>
+            <h2>Savings Goals</h2>
+            <p>Track your progress toward your financial goals.</p>
+        </div>
+    </div>
+
+    <div class="savings-form">
+        <input
+            type="text"
+            id="goal-name"
+            placeholder="Goal name (e.g. New Car)"
+        >
+
+        <input
+            type="number"
+            id="goal-target"
+            placeholder="Target amount ($)"
+            min="0.01"
+            step="0.01"
+        >
+
+        <button id="add-goal-btn" type="button">
+            Add Savings Goal
+        </button>
+    </div>
+
+    <div id="savings-goals-list">
+        <p>No savings goals yet. Create your first goal!</p>
+    </div>
+</section>
+
+
+
+        </main>
+
+    </div>
+
+    <!-- Chart.js library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+    window.fintrackTransactions = {{ transactions | tojson }};
+</script>
+
+
+<!-- Our JavaScript -->
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>
