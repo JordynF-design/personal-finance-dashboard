@@ -1,0 +1,87 @@
+
+# Personal Finance Dashboard
+
+A personal finance management application built with Python, Flask, SQLite, HTML, CSS, and JavaScript.
+
+## Overview
+
+Personal Finance Dashboard helps users track their income, expenses, monthly budgets, and savings goals through an interactive dashboard.
+
+## Features
+
+- Track income and expenses.
+- Add, edit, and delete transactions.
+- Organize transactions by category.
+- Monitor monthly budget progress.
+- Create and manage savings goals.
+- Track savings contributions.
+- View savings progress with visual progress bars.
+- Store financial data using SQLite.
+
+## Technologies Used
+
+- Python
+- Flask
+- SQLite
+- HTML5
+- CSS3
+- JavaScript
+- Chart.js
+- Git and GitHub
+
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/JordynF-design/personal-finance-dashboard.git
+   ```
+
+2. Navigate into the project:
+
+   ```bash
+   cd personal-finance-dashboard
+   ```
+
+3. Create a virtual environment:
+
+   ```bash
+   python3 -m venv venv
+   ```
+
+4. Activate the environment:
+
+   ```bash
+   source venv/bin/activate
+   ```
+
+5. Install dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+6. Run the application:
+
+   ```bash
+   python app.py
+   ```
+
+7. Open your browser and visit:
+
+   `http://127.0.0.1:5001`
+
+## Future Improvements
+
+- Add user authentication.
+- Add financial reports and analytics.
+- Improve mobile responsiveness.
+- Add monthly savings recommendations.
+
+## Author
+
+**Jordyn Flynn**
+
+Computer Science Student
+
+GitHub: [JordynF-design](https://github.com/JordynF-design)
